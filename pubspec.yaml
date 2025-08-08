@@ -37,6 +37,11 @@ dependencies:
   get: ^4.7.2
   url_launcher: ^6.3.2
   geolocator: ^14.0.2
+  geocoding: ^4.0.0
+  location_picker_flutter_map: ^1.1.0
+  flutter_osm_plugin: ^1.4.2
+  supabase_flutter: ^2.9.1
+#  flutter_map: ^8.2.1
 
 dev_dependencies:
   flutter_test:

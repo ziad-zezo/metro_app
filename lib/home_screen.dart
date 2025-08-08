@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:metro_project/route_screen.dart';
 import 'package:metro_project/station.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -415,7 +417,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final fromFocusNode = FocusNode();
 
   final toFocusNode = FocusNode();
-
+  final locationController = TextEditingController();
   Station? fromStation;
   Station? nearestDetectedStation;
   Station? toStation;
@@ -423,14 +425,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
-    getNearestStation();
+    initUserLocation();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Metro Guide"), centerTitle: true),
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -497,9 +499,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       fromFocusNode.unfocus();
                     },
                     leadingIcon: Icon((Icons.directions_train_rounded)),
-                    //     enableSearch: true,
-                    //     enableFilter: true,
-                    //requestFocusOnTap: true,
                     dropdownMenuEntries: [
                       for (var station in line2Stations)
                         DropdownMenuEntry(value: station, label: station.name),
@@ -523,12 +522,37 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   TextField(
+                    controller: locationController,
                     decoration: InputDecoration(
                       hintText: "Where to go",
                       prefixIcon: Icon(Icons.location_on_rounded),
+                      suffixIcon: IconButton(
+                        onPressed: () async {
+                          try {
+                            final location = await locationFromAddress(
+                              locationController.text,
+                            );
+                            toStation = await getNearestStation(
+                              location.first.latitude,
+                              location.first.longitude,
+                            );
+                            setState(() {});
+
+                            Get.snackbar(
+                              "Success",
+                              "${toStation!.name} Station Found for ${locationController.text}",
+                            );
+                          } catch (e) {
+                            Get.snackbar("Location Error", e.toString());
+                          }
+                        },
+                        icon: Icon(Icons.search, color: Colors.green),
+                      ),
                       border: OutlineInputBorder(),
                     ),
                   ),
+
+                  SizedBox(height: 15),
 
                   SizedBox(height: 15),
                   DropdownMenu<Station>(
@@ -542,10 +566,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       fromFocusNode.unfocus();
                     },
                     leadingIcon: Icon(Icons.directions_train_rounded),
-
-                    // enableSearch: true,
-                    //   enableFilter: true,
-                    //requestFocusOnTap: true,
                     dropdownMenuEntries: [
                       for (var station in line2Stations)
                         DropdownMenuEntry(value: station, label: station.name),
@@ -560,7 +580,13 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.only(bottom: 24.0),
               child: MaterialButton(
-                onPressed: () {
+                onPressed: () async {
+                  //!remove this
+                  final response = await Supabase.instance.client
+                      .from('Station')
+                      .select('*');
+                  print("the response is : $response");
+                  //!test
                   if (fromStation != null && toStation != null) {
                     Get.to(
                       RouteScreen(
@@ -595,8 +621,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  //!
-  Future<void> getNearestStation() async {
+  Future<void> initUserLocation() async {
     isLocationLoading.value = true;
     bool serviceEnabled;
     LocationPermission permission;
@@ -626,10 +651,20 @@ class _HomeScreenState extends State<HomeScreen> {
         "Location permissions are permanently denied. Please enable the location permissions in your device's settings.",
       );
     }
-    Position position = await Geolocator.getCurrentPosition();
-    double latitude = position.latitude;
-    double longitude = position.longitude;
 
+    Position position = await Geolocator.getCurrentPosition();
+    nearestDetectedStation = await getNearestStation(
+      position.latitude,
+      position.longitude,
+    );
+    Get.snackbar("Your Location", "Detected Successfully");
+    isLocationLoading.value = false;
+  }
+
+  Future<Station> getNearestStation(
+    final double latitude,
+    final double longitude,
+  ) async {
     Station? nearestStation;
     //check for the nearest station in line 2
     for (var station in line2Stations) {
@@ -661,8 +696,6 @@ class _HomeScreenState extends State<HomeScreen> {
         nearestStation.distance = distance;
       }
     }
-    nearestDetectedStation = nearestStation;
-    Get.snackbar("Your Location", "Detected Successfully");
-    isLocationLoading.value = false;
+    return nearestStation!;
   }
 }
