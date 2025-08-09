@@ -18,177 +18,172 @@ class _HomeScreenState extends State<HomeScreen> {
     Station(
       'Line1',
       name: 'New El Marg',
-      address: Address(latitude: '30.2180', longitude: '31.3405'),
+      address: Address(latitude: '30.163659', longitude: '31.338369'),
     ),
     Station(
       'Line1',
       name: 'El Marg',
-      address: Address(latitude: '30.2205', longitude: '31.3336'),
+      address: Address(latitude: '30.163659', longitude: '31.338369'),
     ),
     Station(
       'Line1',
       name: 'Ezbet El Nakhl',
-      address: Address(latitude: '30.2065', longitude: '31.3364'),
+      address: Address(latitude: '30.139324', longitude: '31.324424'),
     ),
     Station(
       'Line1',
       name: 'Ain Shams',
-      address: Address(latitude: '30.131030', longitude: '31.319092'),
+      address: Address(latitude: '30.130787', longitude: '31.319652'),
     ),
     Station(
       'Line1',
       name: 'El Matarya',
-      address: Address(latitude: '30.1815', longitude: '31.3252'),
+      address: Address(latitude: '30.121344', longitude: '31.313725'),
     ),
     Station(
       'Line1',
       name: 'Helmeyet El Zaitoun',
-      address: Address(latitude: '30.1712', longitude: '31.3205'),
+      address: Address(latitude: '30.113254', longitude: '31.313964'),
     ),
     Station(
       'Line1',
       name: 'Hadayeq El Zaitoun',
-      address: Address(latitude: '30.1615', longitude: '31.3143'),
+      address: Address(latitude: '30.105894', longitude: '31.310488'),
     ),
     Station(
       'Line1',
       name: 'Saray El Qobba',
-      address: Address(latitude: '30.1540', longitude: '31.3092'),
+      address: Address(latitude: '30.097649', longitude: '31.304569'),
     ),
     Station(
       'Line1',
       name: 'Hammamat El Qobba',
-      address: Address(latitude: '30.1449', longitude: '31.3044'),
+      address: Address(latitude: '30.091243', longitude: '31.298917'),
     ),
     Station(
       'Line1',
       name: 'Kobri El Qobba',
-      address: Address(latitude: '30.1376', longitude: '31.2991'),
+      address: Address(latitude: '30.087205', longitude: '31.294111'),
     ),
     Station(
       'Line1',
       name: 'Manshiet El Sadr',
-      address: Address(latitude: '30.1305', longitude: '31.2943'),
+      address: Address(latitude: '30.081992', longitude: '31.287536'),
     ),
     Station(
       'Line1',
       name: 'El Demerdash',
-      address: Address(latitude: '30.1224', longitude: '31.2897'),
+      address: Address(latitude: '30.076785', longitude: '31.277275'),
     ),
     Station(
       'Line1',
       name: 'Ghamra',
-      address: Address(latitude: '30.1165', longitude: '31.2841'),
+      address: Address(latitude: '30.069033', longitude: '31.264620'),
     ),
     Station(
       'Line1',
       name: 'El Shohadaa',
-      address: Address(latitude: '30.061362', longitude: '31.246164'),
+      address: Address(latitude: '30.060613', longitude: '31.246424'),
     ),
     Station(
       'Line1',
       name: 'Orabi',
-      address: Address(latitude: '30.1045', longitude: '31.2415'),
+      address: Address(latitude: '30.056691', longitude: '31.242051'),
     ),
     Station(
       'Line1',
       name: 'Nasser',
-      address: Address(latitude: '30.1012', longitude: '31.2353'),
+      address: Address(latitude: '30.053506', longitude: '31.238730'),
     ),
     Station(
       'Line1',
       name: 'Sadat',
-      address: Address(latitude: '30.0455', longitude: '31.2336'),
+      address: Address(latitude: '30.044143', longitude: '31.234426'),
     ),
     Station(
       'Line1',
       name: 'Saad Zaghloul',
-      address: Address(latitude: '30.0342', longitude: '31.2410'),
+      address: Address(latitude: '30.037038', longitude: '31.238362'),
     ),
     Station(
       'Line1',
       name: 'Sayeda Zeinab',
-      address: Address(latitude: '30.0267', longitude: '31.2436'),
+      address: Address(latitude: '30.029292', longitude: '31.235434'),
     ),
     Station(
       'Line1',
       name: 'El Malek El Saleh',
-      address: Address(latitude: '30.0167', longitude: '31.2457'),
+      address: Address(latitude: '30.017708', longitude: '31.231213'),
     ),
     Station(
       'Line1',
       name: 'Mar Girgis',
-      address: Address(latitude: '30.0089', longitude: '31.2463'),
+      address: Address(latitude: '30.006106', longitude: '31.229628'),
     ),
     Station(
       'Line1',
       name: 'El Zahraa',
-      address: Address(latitude: '29.9988', longitude: '31.2497'),
+      address: Address(latitude: '29.995488', longitude: '31.231182'),
     ),
     Station(
       'Line1',
       name: 'Dar El Salam',
-      address: Address(latitude: '29.9865', longitude: '31.2554'),
+      address: Address(latitude: '29.982071', longitude: '31.242175'),
     ),
     Station(
       'Line1',
       name: 'Hadayek El Maadi',
-      address: Address(latitude: '29.9748', longitude: '31.2588'),
+      address: Address(latitude: '29.982071', longitude: '31.242175'),
     ),
     Station(
       'Line1',
       name: 'Maadi',
-      address: Address(latitude: '29.9628', longitude: '31.2595'),
+      address: Address(latitude: '29.960307', longitude: '31.257647'),
     ),
     Station(
       'Line1',
       name: 'Sakanat El Maadi',
-      address: Address(latitude: '29.9525', longitude: '31.2604'),
+      address: Address(latitude: '29.952906', longitude: '31.263417'),
     ),
     Station(
       'Line1',
       name: 'Tora El Balad',
-      address: Address(latitude: '29.9426', longitude: '31.2622'),
+      address: Address(latitude: '29.946769', longitude: '31.272985'),
     ),
     Station(
       'Line1',
       name: 'Kozzika',
-      address: Address(latitude: '29.9319', longitude: '31.2646'),
+      address: Address(latitude: '29.936264', longitude: '31.281820'),
     ),
     Station(
       'Line1',
       name: 'Tora El Asmant',
-      address: Address(latitude: '29.9215', longitude: '31.2662'),
+      address: Address(latitude: '29.925972', longitude: '31.287547'),
     ),
     Station(
       'Line1',
       name: 'El Maasara',
-      address: Address(latitude: '29.9108', longitude: '31.2685'),
+      address: Address(latitude: '29.906083', longitude: '31.299515'),
     ),
     Station(
       'Line1',
       name: 'Hadayek Helwan',
-      address: Address(latitude: '29.9001', longitude: '31.2698'),
+      address: Address(latitude: '29.906083', longitude: '31.299515'),
     ),
     Station(
       'Line1',
       name: 'Wadi Hof',
-      address: Address(latitude: '29.8900', longitude: '31.2720'),
-    ),
-    Station(
-      'Line1',
-      name: 'Helwan University',
-      address: Address(latitude: '29.8804', longitude: '31.2743'),
+      address: Address(latitude: '29.879095', longitude: '31.313610'),
     ),
     Station(
       'Line1',
       name: 'Ain Helwan',
-      address: Address(latitude: '29.8711', longitude: '31.2765'),
+      address: Address(latitude: '29.862617', longitude: '31.324882'),
     ),
     Station(
       'Line1',
       name: 'Helwan',
-      address: Address(latitude: '29.8620', longitude: '31.2789'),
+      address: Address(latitude: '29.854133', longitude: '31.331596'),
     ),
   ];
   final List<Station> line2Stations = [
@@ -488,22 +483,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(height: 15),
-                  DropdownMenu<Station>(
-                    width: double.infinity, // or a fixed width like 300
-                    // focusNode: fromFocusNode,
-                    label: Text("From"),
-                    initialSelection: fromStation,
-                    menuHeight: 250,
+                  StationsDropDownMenu(
+                    label: "From",
+                    initialStation: fromStation,
                     onSelected: (value) {
                       fromStation = value;
                       fromFocusNode.unfocus();
                     },
-                    leadingIcon: Icon((Icons.directions_train_rounded)),
-                    dropdownMenuEntries: [
-                      for (var station in line2Stations)
-                        DropdownMenuEntry(value: station, label: station.name),
-                      for (var station in line3Stations)
-                        DropdownMenuEntry(value: station, label: station.name),
+                    stations: [
+                      ...line2Stations,
+                      ...line2Stations,
+                      ...line3Stations,
                     ],
                   ),
                 ],
@@ -576,7 +566,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 24.0),
               child: MaterialButton(
@@ -697,5 +687,35 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
     return nearestStation!;
+  }
+}
+
+class StationsDropDownMenu extends StatelessWidget {
+  const StationsDropDownMenu({
+    super.key,
+    required this.label,
+    this.initialStation,
+    required this.onSelected,
+    required this.stations,
+  });
+  final String label;
+  final Station? initialStation;
+  final Function(Station?) onSelected;
+  final List<Station> stations;
+  @override
+  Widget build(BuildContext context) {
+    return DropdownMenu<Station>(
+      width: double.infinity, // or a fixed width like 300
+      // focusNode: fromFocusNode,
+      label: Text(label),
+      initialSelection: initialStation,
+      menuHeight: 250,
+      onSelected: onSelected,
+      leadingIcon: Icon((Icons.directions_train_rounded)),
+      dropdownMenuEntries: [
+        for (var station in stations)
+          DropdownMenuEntry(value: station, label: station.name),
+      ],
+    );
   }
 }
