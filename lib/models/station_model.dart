@@ -1,9 +1,9 @@
-class Station {
+class StationModel {
   final String name;
   final Address address;
   final String line;
   double? distance;
-  Station(
+  StationModel(
     this.line, {
     required this.name,
     required this.address,

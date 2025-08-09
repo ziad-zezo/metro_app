@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:metro_project/station.dart';
+import 'package:metro_project/models/station_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RouteScreen extends StatelessWidget {
@@ -8,8 +8,8 @@ class RouteScreen extends StatelessWidget {
     required this.fromStation,
     required this.toStation,
   });
-  final Station fromStation;
-  final Station toStation;
+  final StationModel fromStation;
+  final StationModel toStation;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
