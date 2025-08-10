@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
 import 'package:metro_project/screens/home_screen.dart';
+import 'package:metro_project/translations/app_translations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'controllers/settings_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final settingsController = Get.put(SettingsController());
+  await settingsController.loadSettings();
+
   await Supabase.initialize(
     url: 'https://kpughuodxdjsodscurmf.supabase.co',
     anonKey:
@@ -18,11 +25,22 @@ class MetroApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.dark,
-      theme: ThemeData.dark(),
-      home: HomeScreen(),
+    final settingsController = Get.put(SettingsController());
+    return Obx(
+      () => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        // Theme settings
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        themeMode: settingsController.isDarkMode.value
+            ? ThemeMode.dark
+            : ThemeMode.light,
+        // Language settings
+        translations: AppTranslations(),
+        locale: settingsController.locale.value,
+        fallbackLocale: const Locale('en', 'US'),
+        home: HomeScreen(),
+      ),
     );
   }
 }

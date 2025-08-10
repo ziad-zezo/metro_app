@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class WhereToGoTextField extends StatelessWidget {
   const WhereToGoTextField({
@@ -7,6 +8,7 @@ class WhereToGoTextField extends StatelessWidget {
     required this.onPressed,
     this.onSubmitted,
   });
+
   final TextEditingController locationController;
   final VoidCallback onPressed;
   final Function(String)? onSubmitted;
@@ -16,7 +18,7 @@ class WhereToGoTextField extends StatelessWidget {
     return TextField(
       controller: locationController,
       decoration: InputDecoration(
-        hintText: "Where to go",
+        hintText: "where_to_go".tr,
         prefixIcon: Icon(Icons.location_on_rounded),
         suffixIcon: IconButton(
           onPressed: onPressed,

@@ -10,15 +10,21 @@ class StationsDropDownMenu extends StatelessWidget {
     required this.onSelected,
     required this.stations,
   });
+
   final String label;
   final StationModel? initialStation;
   final Function(StationModel?) onSelected;
   final List<StationModel> stations;
+
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<StationModel>(
-      width: double.infinity, // or a fixed width like 300
+      width: double.infinity,
+      // or a fixed width like 300
       // focusNode: fromFocusNode,
+      requestFocusOnTap: true,
+      enableSearch: true,
+      // enableFilter: true,
       label: Text(label),
       initialSelection: initialStation,
       menuHeight: 250,
