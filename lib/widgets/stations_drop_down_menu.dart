@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../models/station_model.dart';
 
@@ -9,21 +10,27 @@ class StationsDropDownMenu extends StatelessWidget {
     this.initialStation,
     required this.onSelected,
     required this.stations,
+    required this.focusNode,
   });
 
   final String label;
   final StationModel? initialStation;
   final Function(StationModel?) onSelected;
   final List<StationModel> stations;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<StationModel>(
+      key: UniqueKey(),
+      closeBehavior: DropdownMenuCloseBehavior.all,
+      menuStyle: MenuStyle(),
       width: double.infinity,
       // or a fixed width like 300
-      // focusNode: fromFocusNode,
+      focusNode: focusNode,
       requestFocusOnTap: true,
       enableSearch: true,
+      enableFilter: true,
       // enableFilter: true,
       label: Text(label),
       initialSelection: initialStation,
@@ -31,8 +38,8 @@ class StationsDropDownMenu extends StatelessWidget {
       onSelected: onSelected,
       leadingIcon: Icon((Icons.directions_train_rounded)),
       dropdownMenuEntries: [
-        for (var station in stations)
-          DropdownMenuEntry(value: station, label: station.name),
+        for (var station in stations.toSet())
+          DropdownMenuEntry(value: station, label: station.name.tr),
       ],
     );
   }

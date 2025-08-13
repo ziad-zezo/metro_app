@@ -6,7 +6,7 @@ class SettingsController extends GetxController {
   static const String themeKey = 'isDarkMode';
   static const String langKey = 'languageCode';
 
-  var isDarkMode = false.obs;
+  var isDarkMode = true.obs;
   var locale = const Locale('en').obs;
 
   @override

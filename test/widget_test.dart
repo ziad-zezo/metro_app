@@ -13,7 +13,7 @@ import 'package:metro_project/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MetroApp());
+    await tester.pumpWidget(const MisrMetro());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
