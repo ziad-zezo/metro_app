@@ -10,7 +10,7 @@ import '../helper/notifications.dart';
 import '../helper/stations.dart';
 
 class RouteScreen extends StatefulWidget {
-  const RouteScreen({
+  RouteScreen({
     super.key,
     required this.originalRoute,
     required this.fromStation,
@@ -28,6 +28,8 @@ class RouteScreen extends StatefulWidget {
 class _RouteScreenState extends State<RouteScreen> {
   late List<StationModel> _currentRoute;
   bool _showingAlternative = false;
+  // kept for compatibility with code that referenced it elsewhere,
+  // but we no longer mutate it during build.
   int _changingCount = 0;
   late StationModel _currentStation;
 
@@ -55,20 +57,20 @@ class _RouteScreenState extends State<RouteScreen> {
               false,
         )
         .toList();
-    // 3. إذا وجدنا محطات نقل، نمنع الاتصال بين بعضها
+
     if (transferStations.isNotEmpty) {
       final stationToBlock = transferStations.first;
       alternativeGraph[stationToBlock] = alternativeGraph[stationToBlock]!
           .where((neighbor) => neighbor.line == stationToBlock.line)
           .toList();
     }
-    // 4. البحث عن مسار جديد
+
     final newRoute = bfsRoute(
       widget.fromStation,
       widget.toStation,
       alternativeGraph,
     );
-    // 5. التحقق من أن المسار مختلف عن الأصلي
+
     if (newRoute.isNotEmpty &&
         !_areRoutesSame(widget.originalRoute, newRoute)) {
       setState(() {
@@ -76,7 +78,6 @@ class _RouteScreenState extends State<RouteScreen> {
         _showingAlternative = true;
       });
     } else {
-      // 6. إذا لم ينجح، نجرب منع محطة نقل أخرى
       if (transferStations.length > 1) {
         final anotherStationToBlock = transferStations[1];
         alternativeGraph[anotherStationToBlock] =
@@ -101,7 +102,11 @@ class _RouteScreenState extends State<RouteScreen> {
           return;
         }
       }
-      _changingCount = 0;
+
+      setState(() {
+        _showingAlternative = false;
+        _changingCount = 0;
+      });
       Get.snackbar(
         "No Alternative Found".tr,
         "Cannot find a different route with current constraints".tr,
@@ -109,7 +114,6 @@ class _RouteScreenState extends State<RouteScreen> {
     }
   }
 
-  // دالة مساعدة لمقارنة المسارات
   bool _areRoutesSame(List<StationModel> route1, List<StationModel> route2) {
     if (route1.length != route2.length) return false;
     for (int i = 0; i < route1.length; i++) {
@@ -129,9 +133,26 @@ class _RouteScreenState extends State<RouteScreen> {
     });
   }
 
+  int _getStationsNumber() {
+    int dupCount = 0;
+    for (int i = 1; i < _currentRoute.length; i++) {
+      if (_currentRoute[i].name == _currentRoute[i - 1].name) dupCount++;
+    }
+    return _currentRoute.length - dupCount;
+  }
+
   @override
   Widget build(BuildContext context) {
-    // print("hiii ziad");
+    final int n = _currentRoute.length;
+    final List<int> displayIndices = List.filled(n, 0);
+    int dupAccum = 0;
+    for (int i = 0; i < n; i++) {
+      if (i > 0 && _currentRoute[i].name == _currentRoute[i - 1].name) {
+        dupAccum++;
+      }
+      displayIndices[i] = (i + 1) - dupAccum;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Route".tr),
@@ -147,7 +168,7 @@ class _RouteScreenState extends State<RouteScreen> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsetsGeometry.all(8),
+        padding: EdgeInsets.all(8),
         child: Column(
           children: [
             RouteHeader(
@@ -165,14 +186,8 @@ class _RouteScreenState extends State<RouteScreen> {
                   final nextStation = index < _currentRoute.length - 1
                       ? _currentRoute[index + 1]
                       : null;
-                  // حساب الرقم الحقيقي للمحطة مع مراعاة التكرار
-                  int displayIndex = index + 1;
-                  if (index > 0 &&
-                      _currentRoute[index].name ==
-                          _currentRoute[index - 1].name) {
-                    displayIndex = index; // استخدام نفس الرقم إذا تكررت المحطة
-                    _changingCount++;
-                  }
+
+                  final displayIndex = displayIndices[index];
 
                   return Column(
                     children: [
@@ -213,14 +228,10 @@ class _RouteScreenState extends State<RouteScreen> {
                             color: Colors.grey[600],
                           ),
                         ),
-                        trailing: Icon(
-                          Icons.directions,
-                          color: Colors.blueAccent,
-                        ),
+                        trailing: Icon(Icons.directions, color: Colors.green),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        // tileColor: Colors.white,
                         onTap: () async {
                           final url = Uri.parse(
                             "https://maps.google.com/?ll=${station.address.latitude},${station.address.longitude}",
@@ -293,14 +304,16 @@ class _RouteScreenState extends State<RouteScreen> {
         padding: const EdgeInsets.only(bottom: 80.0),
         child: FloatingActionButton(
           onPressed: () {
-            int currentIndex = _currentRoute.indexOf(_currentStation);
+            final currentIndex = _currentRoute.indexOf(_currentStation);
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  "${"Remaining Time".tr}: ${(_currentRoute.sublist(currentIndex).length * 2.5).toInt()}",
-                ),
-              ),
+            if (currentIndex == -1) {
+              Get.snackbar("Info".tr, "Current station not in route".tr);
+              return;
+            }
+
+            Get.snackbar(
+              "Remaining Time".tr,
+              "${"Remaining Time".tr}: ${((_currentRoute.sublist(currentIndex).length - dupAccum) * 2.5).toInt()}",
             );
           },
           tooltip: "Show Remaining Time".tr,
@@ -310,25 +323,24 @@ class _RouteScreenState extends State<RouteScreen> {
     );
   }
 
-  int _getStationsNumber() => _currentRoute.length - _changingCount;
-
   Future<void> _trackLocation() async {
-    Get.snackbar("tracking ", "message");
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        print("Location permission denied");
+        Get.snackbar(
+          "Location Error".tr,
+          "Location permissions are denied. Please enable the location permissions in your device\'s settings."
+              .tr,
+        );
         return;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      print("Location permissions are permanently denied");
       return;
     }
 
-    // Step 2: Listen to position stream
     Geolocator.getPositionStream(
       locationSettings: LocationSettings(
         accuracy: LocationAccuracy.high, // High accuracy
@@ -342,7 +354,8 @@ class _RouteScreenState extends State<RouteScreen> {
       );
       _currentStation = currentStation;
       setState(() {});
-      if (currentStation.name == _currentRoute[_currentRoute.length - 2].name) {
+      if (_currentRoute.length >= 2 &&
+          currentStation.name == _currentRoute[_currentRoute.length - 2].name) {
         await showNotification(
           "almost_there_title".tr,
           "almost_there_message".trParams({"station": currentStation.name}),

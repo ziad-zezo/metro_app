@@ -34,12 +34,10 @@ class StationModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is StationModel &&
-          runtimeType == other.runtimeType &&
-          name == other.name;
+      other is StationModel && other.name == name && other.line == line;
 
   @override
-  int get hashCode => name.hashCode;
+  int get hashCode => Object.hash(name, line);
 }
 
 class Address {

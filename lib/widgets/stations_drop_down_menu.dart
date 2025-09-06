@@ -21,6 +21,7 @@ class StationsDropDownMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final uniqueStations = {for (var s in stations) s.name: s}.values.toList();
     return DropdownMenu<StationModel>(
       key: UniqueKey(),
       closeBehavior: DropdownMenuCloseBehavior.all,
@@ -38,7 +39,7 @@ class StationsDropDownMenu extends StatelessWidget {
       onSelected: onSelected,
       leadingIcon: Icon((Icons.directions_train_rounded)),
       dropdownMenuEntries: [
-        for (var station in stations.toSet())
+        for (var station in uniqueStations)
           DropdownMenuEntry(value: station, label: station.name.tr),
       ],
     );

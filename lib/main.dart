@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:metro_project/constants.dart';
 import 'package:metro_project/screens/home_screen.dart';
 import 'package:metro_project/translations/app_translations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -27,11 +28,7 @@ void main() async {
   await settingsController.loadSettings();
 
   //initialize supabase
-  await Supabase.initialize(
-    url: 'https://kpughuodxdjsodscurmf.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwdWdodW9keGRqc29kc2N1cm1mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ2Njk0ODcsImV4cCI6MjA3MDI0NTQ4N30.v52H1nXyx3-WcJjdYbGRZ5km4kddDQFODUPfoyaNZNY',
-  );
+  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
   runApp(MisrMetro());
 }
 

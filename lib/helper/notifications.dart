@@ -32,7 +32,7 @@ Future<void> showNotification(String title, String body) async {
   );
 
   await flutterLocalNotificationsPlugin.show(
-    0, // notification ID
+    0, 
     title,
     body,
     platformChannelSpecifics,

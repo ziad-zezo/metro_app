@@ -45,17 +45,13 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _isLoading
           ? Center(
               child: Column(
-                // mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Spacer(),
                   SizedBox(
                     height: 170,
                     width: 300,
                     child: Lottie.asset(
                       'assets/animations/train.json',
-                      //   width: 80,
-                      // height: 80,
                       fit: BoxFit.fill,
                       backgroundLoading: true,
                     ),
@@ -63,14 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     "Loading stations".tr,
                     style: TextStyle(color: Colors.grey, fontSize: 20),
-                  ),
-                  Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24.0),
-                    child: Text(
-                      "Misr Metro by Ziad Mohamed",
-                      style: TextStyle(color: Colors.grey, fontSize: 20),
-                    ),
                   ),
                 ],
               ),
@@ -108,82 +96,150 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _loadStations() async {
     _isLoading = true;
-    line1Stations = await SupabaseService().getStationsByLine(line: 1);
-    line2Stations = await SupabaseService().getStationsByLine(line: 2);
-    line3Stations = await SupabaseService().getStationsByLine(line: 3);
-    print("the inter");
+    setState(() {});
 
     bool isConnected = await InternetChecker.isConnectedToInternet();
     if (!isConnected) {
-      showDialog(
-        context: context,
-        barrierDismissible: false, // can't dismiss by tapping outside
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            contentPadding: const EdgeInsets.all(16),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Funny animation
-                Card(
-                  color: Colors.grey,
-                  shape: CircleBorder(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+      _showNoInternetDialog();
+      //_isLoading = false;
+      // setState(() {});
+      return;
+    }
 
-                    child: Icon(
-                      Icons.wifi_off_outlined,
-                      color: Colors.red,
-                      size: 35,
-                    ),
-                  ),
-                ),
+    try {
+      line1Stations = await SupabaseService()
+          .getStationsByLine(line: 1)
+          .timeout(const Duration(seconds: 8));
+      line2Stations = await SupabaseService()
+          .getStationsByLine(line: 2)
+          .timeout(const Duration(seconds: 8));
+      line3Stations = await SupabaseService()
+          .getStationsByLine(line: 3)
+          .timeout(const Duration(seconds: 8));
 
-                const SizedBox(height: 10),
-                Text(
-                  "No Internet Connection",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red[700],
-                  ),
-                ),
-                const SizedBox(height: 5),
-                const Text(
-                  "Please check your connection and try again.",
-                  textAlign: TextAlign.center,
-                ),
-
-                const SizedBox(height: 15),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    backgroundColor: Colors.green,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _loadStations();
-                  },
-                  icon: const Icon(Icons.refresh),
-                  label: const Text("Retry"),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    } else {
       if (line1Stations != null &&
           line2Stations != null &&
           line3Stations != null) {
         _isLoading = false;
         setState(() {});
       }
+    } catch (e) {
+      //_isLoading = false;
+      //setState(() {});
+      _showFailedDialog(title: "Failed To load Stations", message: "Try Again");
+      _showNoInternetDialog();
     }
+  }
+
+  void _showNoInternetDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          contentPadding: const EdgeInsets.all(16),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Card(
+                color: Colors.grey,
+                shape: CircleBorder(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    Icons.wifi_off_outlined,
+                    color: Colors.red,
+                    size: 35,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "No Internet Connection",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red[700],
+                ),
+              ),
+              const SizedBox(height: 5),
+              const Text(
+                "Please check your connection and try again.",
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 15),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  backgroundColor: Colors.green,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  _loadStations();
+                },
+                icon: const Icon(Icons.refresh),
+                label: const Text("Retry"),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showFailedDialog({required String title, required String message}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.error_outline, color: Colors.red, size: 28),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+          content: Text(message, style: const TextStyle(fontSize: 16)),
+          actions: [
+            TextButton(
+              child: const Text("Cancel", style: TextStyle(color: Colors.grey)),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                _loadStations();
+              },
+              icon: const Icon(Icons.refresh),
+              label: const Text("Retry"),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

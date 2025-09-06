@@ -17,7 +17,7 @@ class SettingsController extends GetxController {
 
   Future<void> loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
-    isDarkMode.value = prefs.getBool(themeKey) ?? false;
+    isDarkMode.value = prefs.getBool(themeKey) ?? true;
     String langCode = prefs.getString(langKey) ?? 'en';
     locale.value = Locale(langCode);
     Get.changeThemeMode(isDarkMode.value ? ThemeMode.dark : ThemeMode.light);

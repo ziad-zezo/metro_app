@@ -54,7 +54,8 @@ class AppTranslations extends Translations {
           "You are now at @station. Your destination is the next station.",
       "arrived_title": "Arrived",
       "arrived_message": "You have arrived at your destination: @station.",
-
+      "No Alternative Found": "No Alternative Found",
+      "Cannot find a different route with current constraints":"Cannot find a different route with current constraints",
       //!Stations
       //line1
       'New El Marg': 'New El Marg',
@@ -197,6 +198,8 @@ class AppTranslations extends Translations {
       "Show Route On Map": "عرض المسار على الخريطة",
       "Show Remaining Time": "عرض الوقت المتبقي",
       "Remaining Time": "الوقت المتبقي",
+      "No Alternative Found": "لم يتم العثور على مسار بديل",
+      "Cannot find a different route with current constraints":"لا يمكن العثور على مسار بديل مع الحدود الحالية",
       "0": "٠",
       "1": "١",
       "2": "٢",

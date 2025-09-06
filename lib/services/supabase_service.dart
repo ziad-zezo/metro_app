@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:metro_project/models/station_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -10,7 +11,9 @@ class SupabaseService {
           .eq('line', "Line$line")
           .order("id");
       return query.map((row) => StationModel.fromJson(row)).toList();
-    } catch (e, s) {}
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    }
     return null;
   }
 

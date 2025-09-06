@@ -9,7 +9,6 @@ Map<StationModel, List<StationModel>> buildGraph(
   final graph = <StationModel, List<StationModel>>{};
   final allStations = [...line1Stations, ...line2Stations, ...line3Stations];
 
-  // دالة مساعدة لربط المحطات في الخط الواحد
   void connectLine(List<StationModel> line) {
     for (int i = 0; i < line.length; i++) {
       final station = line[i];
@@ -17,7 +16,7 @@ Map<StationModel, List<StationModel>> buildGraph(
 
       if (i > 0) {
         graph[station]!.add(line[i - 1]);
-        graph[line[i - 1]]!.add(station); // اتصال ثنائي الاتجاه
+        graph[line[i - 1]]!.add(station);
       }
     }
   }
@@ -26,7 +25,6 @@ Map<StationModel, List<StationModel>> buildGraph(
   connectLine(line2Stations);
   connectLine(line3Stations);
 
-  // ربط المحطات المشتركة
   final nameToStations = <String, List<StationModel>>{};
   for (final station in allStations) {
     nameToStations.putIfAbsent(station.name.trim(), () => []).add(station);
@@ -60,7 +58,6 @@ List<StationModel> bfsRoute(
   while (queue.isNotEmpty) {
     final current = queue.removeFirst();
 
-    // المقارنة بأسماء المحطات بعد trim للتأكد من التطابق
     if (current.name.trim() == goal.name.trim()) {
       final path = <StationModel>[];
       StationModel? step = current;
